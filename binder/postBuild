@@ -1,0 +1,16 @@
+#!/bin/bash
+
+mkdir experiments
+mv data experiments
+mv results experiments
+mv *.py experiments
+mv *.ipynb experiments
+mv *.md experiments
+
+mkdir datasets
+mkdir datasets/movielens
+mkdir datasets/bookcrossing
+
+wget -P datasets/movielens/ http://files.grouplens.org/datasets/movielens/ml-1m.zip
+wget -P datasets/movielens/ http://files.grouplens.org/datasets/movielens/ml-10m.zip
+wget -P datasets/bookcrossing/ http://www2.informatik.uni-freiburg.de/~cziegler/BX/BX-CSV-Dump.zip
