@@ -1,5 +1,5 @@
 # Reproducing HybridSVD paper
-The repository contains full source code for reproducing results from the HybridSVD paper. If you want to run it on you own machine, make sure to prepare [conda environment](https://docs.conda.io/projects/conda/en/latest/user-guide/tasks/manage-environments.html) according to [this](binder/environment.yml) configuation file, which contains the list of all required packages (including their versions).  
+This repository contains full source code for reproducing results from the HybridSVD paper. If you want to run it on your own machine, make sure to prepare [conda environment](https://docs.conda.io/projects/conda/en/latest/user-guide/tasks/manage-environments.html) according to [this](binder/environment.yml) configuation file, which contains the list of all required packages (including their versions).  
 
 You can also **interactively run experiments directly in your browser** with the help of [Binder](https://mybinder.readthedocs.io) cloud technologies. Simply click on the badge below to get started:
 
@@ -7,7 +7,8 @@ You can also **interactively run experiments directly in your browser** with the
 
 This will launch interactive JupyterLab environment with access to all repository files. By default it starts with the `HybridSVD.ipynb` notebook that contains the code for HybridSVD model evaluated on the Movielens and Bookcrossing datasets.  
 
-**Important**: due to restrictions on cloud resources only small datasets, i.e., `Movielens-1M` or `Amazon Video Games`, allow performing full experiments. Attempts to work with larger files will likely crash the environment. Therefore it's advised to do the following modifications to run jupyter notebooks safely:
+## Mind cloud environment restrictions
+Due to restrictions on Binder's cloud resources only small datasets, e.g., `Movielens-1M` or `Amazon Video Games`, allow performing full experiments without interruption. Attempts to work with larger files will likely crash the environment. Originally all experiments were conducted on HPC servers with much larger amount of hardware resources. It is, therefore, advised to make the following modifications to run jupyter notebooks safely in the Binder cloud:
 
 ### Working with Movielens-1M data
 Experiments with this dataset are available in the following files:
@@ -18,7 +19,7 @@ Experiments with this dataset are available in the following files:
 * ScaledSVD.ipynb
 * ScaledHybridSVD.ipynb
 
-You need to change the `data_labels` variable in the `Experiment setup` section from
+You need to change the `data_labels` variable in the `Experiment setup` section of each notebook from
 ```python
 data_labels = ['ML1M', 'ML10M', 'BX']
 ```
@@ -26,7 +27,7 @@ to
 ```python
 data_labels = ['ML1M']
 ```
-Accordingly, do not run cells under `Movielens10M` and `BookCrossing` headers. Also make sure that the first argument to the `get_movielens_data` is *../datasets/movielens/ml-1m.zip* (originally the notebooks were executed on several machines that's why the path may vary), e.g., it should start as:
+Accordingly, do not run cells under `Movielens10M` and `BookCrossing` headers (these datasets are not provided in the cloud environment). Also make sure that the first argument to the `get_movielens_data` is *../datasets/movielens/ml-1m.zip* (originally the notebooks were executed on several machines that's why the path may vary), e.g., it should start as:
 ```python
 data_dict[lbl], meta_dict[lbl] = get_movielens_data('../datasets/movielens/ml-1m.zip',
                                                      <other arguments>
@@ -56,4 +57,7 @@ data_dict[lbl], meta_dict[lbl] = get_amazon_data('../datasets/amazon/ratings_Vid
                                                  <other arguments>
 ```
 
-Keep in mind that some models require much longer training time than others. For example, the whole experiment for `HybridSVD` in both standard and cold start scenarios on Movielens-1M data completes even before the initial tuning of `Factorization Machines` is done for standard scenario. As Binder automatically shuts down long running tasks you may not be able to perform all computations. To reduce the risk of time-out shutdown you may want to run different notebooks in different (parallel) Binder sessions. You may also want to reduce the number of points to consider in the random grid search for tuning non SVD-based models. For example, in the FM case you can change the `ntrial=60` input to `ntrials=30` in the `fine_tune_fm(model, params, label, ntrials=60)` function calls. This may, however, slightly decrease the resulting quality of FM.
+### Reducing training time
+Keep in mind that some models require much longer training time than others. For example, the whole experiment for `HybridSVD` in both standard and cold start scenarios on the Movielens-1M dataset completes even before the initial tuning of `Factorization Machines` is done for standard scenario. As Binder automatically shuts down long running tasks you may not be able to perform all computations before the timeout. To reduce the risk of such shutdown you may want to run different notebooks (different models) in independent Binder sessions. You may also want to reduce the number of points to consider in the random grid search for tuning non SVD-based models. For example, in the FM case you can change the `ntrial=60` input to `ntrials=30` in the `fine_tune_fm(model, params, label, ntrials=60)` function calls. This may, however, slightly decrease the resulting quality of FM.
+
+Alternatively, you can skip parameter tuning sections for long-running models and reuse previously found set of nearly optimal hyper-parameters. They are printed in the end of each section with model tuning. You can also find them in the [View optimal parameters](View_optimal_parameters.ipynb) notebook.
