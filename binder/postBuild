@@ -9,8 +9,9 @@ mv *.md experiments
 
 mkdir datasets
 mkdir datasets/movielens
-mkdir datasets/bookcrossing
+mkdir datasets/amazon
+mkdir datasets/amazon/meta
 
 wget -P datasets/movielens/ http://files.grouplens.org/datasets/movielens/ml-1m.zip
-wget -P datasets/movielens/ http://files.grouplens.org/datasets/movielens/ml-10m.zip
-wget -P datasets/bookcrossing/ http://www2.informatik.uni-freiburg.de/~cziegler/BX/BX-CSV-Dump.zip
+wget -P datasets/amazon/ http://snap.stanford.edu/data/amazon/productGraph/categoryFiles/ratings_Video_Games.csv
+wget -P datasets/amazon/meta/ http://snap.stanford.edu/data/amazon/productGraph/categoryFiles/meta_Video_Games.json.gz
